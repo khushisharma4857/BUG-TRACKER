@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bug Bash Arena // Live QA War Room</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="noise"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">[ ]</span>
+    <div class="brand-text">
+      <h1>BUG BASH ARENA</h1>
+      <p class="brand-sub">live QA war room // severity-weighted scoring</p>
+    </div>
+  </div>
+
+  <div class="session-clock">
+    <span class="clock-label">session time</span>
+    <span class="clock-value" id="sessionClock">00:00:00</span>
+  </div>
+
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" id="resetBtn" title="Reset session"><i class="ti ti-refresh"></i> reset</button>
+    <button class="btn btn-primary" id="logBugBtn"><i class="ti ti-plus"></i> log bug</button>
+  </div>
+</header>
+
+<div class="status-strip">
+  <div class="status-item">
+    <span class="status-dot dot-live"></span>
+    <span>SESSION ACTIVE</span>
+  </div>
+  <div class="status-item" id="totalBugsStrip">0 bugs logged</div>
+  <div class="status-item" id="topHunterStrip">no hunters yet</div>
+  <div class="status-item" id="streakStrip">no active streak</div>
+</div>
+
+<main class="grid">
+
+  <!-- LEFT: LEADERBOARD -->
+  <section class="panel leaderboard-panel">
+    <div class="panel-head">
+      <h2><i class="ti ti-trophy"></i> hunter leaderboard</h2>
+      <span class="panel-tag" id="hunterCount">0 hunters</span>
+    </div>
+    <div class="leaderboard-list" id="leaderboardList">
+      <div class="empty-state">
+        <i class="ti ti-ghost-2"></i>
+        <p>no hunters on the board yet</p>
+        <span>log the first bug to start the chase</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CENTER: RADAR + FEED -->
+  <section class="panel center-panel">
+    <div class="panel-head">
+      <h2><i class="ti ti-radar-2"></i> severity radar</h2>
+      <span class="panel-tag" id="radarTotal">0 total</span>
+    </div>
+
+    <div class="radar-wrap">
+      <svg id="radarSvg" viewBox="0 0 400 400"></svg>
+      <div class="radar-center-score">
+        <span class="score-value" id="globalScore">0</span>
+        <span class="score-label">arena score</span>
+      </div>
+    </div>
+
+    <div class="severity-legend" id="severityLegend"></div>
+
+    <div class="panel-head feed-head">
+      <h2><i class="ti ti-activity"></i> live activity feed</h2>
+    </div>
+    <div class="activity-feed" id="activityFeed">
+      <div class="empty-state small">
+        <p>the war room is quiet. log a bug to break the silence.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: STATS + COMBO -->
+  <section class="panel stats-panel">
+    <div class="panel-head">
+      <h2><i class="ti ti-bolt"></i> combo meter</h2>
+    </div>
+    <div class="combo-box">
+      <div class="combo-flame" id="comboFlame">
+        <span id="comboCount">0</span>
+        <span class="combo-x">x</span>
+      </div>
+      <p class="combo-caption" id="comboCaption">no streak. find a critical to ignite one.</p>
+    </div>
+
+    <div class="panel-head">
+      <h2><i class="ti ti-chart-donut-2"></i> severity breakdown</h2>
+    </div>
+    <div class="breakdown-bars" id="breakdownBars"></div>
+
+    <div class="panel-head">
+      <h2><i class="ti ti-medal"></i> achievements</h2>
+    </div>
+    <div class="achievements" id="achievements"></div>
+  </section>
+
+</main>
+
+<!-- LOG BUG MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="bugModal">
+    <div class="modal-head">
+      <h3><i class="ti ti-bug"></i> log a bug</h3>
+      <button class="modal-close" id="modalClose"><i class="ti ti-x"></i></button>
+    </div>
+
+    <form id="bugForm">
+      <div class="field">
+        <label for="hunterName">hunter callsign</label>
+        <input type="text" id="hunterName" placeholder="e.g. khushi.qa" autocomplete="off" required>
+        <div class="quick-hunters" id="quickHunters"></div>
+      </div>
+
+      <div class="field">
+        <label for="bugTitle">bug title</label>
+        <input type="text" id="bugTitle" placeholder="e.g. checkout button does nothing on Safari" autocomplete="off" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>severity</label>
+          <div class="severity-pick" id="severityPick">
+            <button type="button" class="sev-opt sev-critical" data-sev="critical">
+              <i class="ti ti-skull"></i><span>critical</span><small>50 pts</small>
+            </button>
+            <button type="button" class="sev-opt sev-high" data-sev="high">
+              <i class="ti ti-flame"></i><span>high</span><small>25 pts</small>
+            </button>
+            <button type="button" class="sev-opt sev-medium" data-sev="medium">
+              <i class="ti ti-alert-triangle"></i><span>medium</span><small>10 pts</small>
+            </button>
+            <button type="button" class="sev-opt sev-low" data-sev="low">
+              <i class="ti ti-info-circle"></i><span>low</span><small>5 pts</small>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bugModule">module / area</label>
+        <input type="text" id="bugModule" placeholder="e.g. checkout, auth, search" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="bugNotes">repro notes (optional)</label>
+        <textarea id="bugNotes" rows="2" placeholder="steps to reproduce, environment, etc."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelBtn">cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="ti ti-bug"></i> submit to arena</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
