@@ -27,11 +27,26 @@
     <span class="clock-value" id="sessionClock">00:00:00</span>
   </div>
 
+  <div class="round-control">
+    <span class="clock-label" id="roundLabel">no round running</span>
+    <span class="clock-value round-clock" id="roundClock">--:--</span>
+    <button class="btn btn-ghost btn-sm" id="roundBtn"><i class="ti ti-player-play"></i> start round</button>
+  </div>
+
   <div class="topbar-actions">
+    <button class="btn btn-ghost" id="exportBtn" title="Export CSV"><i class="ti ti-download"></i> export</button>
+    <button class="btn btn-ghost" id="reportBtn" title="Session report"><i class="ti ti-report"></i> report</button>
+    <button class="btn btn-ghost" id="soundBtn" title="Toggle sound"><i class="ti ti-volume-2"></i></button>
     <button class="btn btn-ghost" id="resetBtn" title="Reset session"><i class="ti ti-refresh"></i> reset</button>
     <button class="btn btn-primary" id="logBugBtn"><i class="ti ti-plus"></i> log bug</button>
   </div>
 </header>
+
+<div class="boss-banner" id="bossBanner" style="display:none;">
+  <i class="ti ti-skull-bolt"></i>
+  <span id="bossBannerText">a boss bug has spawned</span>
+  <span class="boss-timer" id="bossTimer">60s</span>
+</div>
 
 <div class="status-strip">
   <div class="status-item">
@@ -50,6 +65,13 @@
     <div class="panel-head">
       <h2><i class="ti ti-trophy"></i> hunter leaderboard</h2>
       <span class="panel-tag" id="hunterCount">0 hunters</span>
+    </div>
+    <div class="mvp-slot" id="mvpSlot" style="display:none;">
+      <i class="ti ti-crown"></i>
+      <div>
+        <div class="mvp-name" id="mvpName"></div>
+        <div class="mvp-label">current MVP</div>
+      </div>
     </div>
     <div class="leaderboard-list" id="leaderboardList">
       <div class="empty-state">
@@ -79,6 +101,16 @@
 
     <div class="panel-head feed-head">
       <h2><i class="ti ti-activity"></i> live activity feed</h2>
+    </div>
+    <div class="feed-controls">
+      <input type="text" id="feedSearch" placeholder="search bugs by title, module, hunter...">
+      <select id="feedFilter">
+        <option value="all">all severities</option>
+        <option value="critical">critical only</option>
+        <option value="high">high only</option>
+        <option value="medium">medium only</option>
+        <option value="low">low only</option>
+      </select>
     </div>
     <div class="activity-feed" id="activityFeed">
       <div class="empty-state small">
@@ -158,6 +190,11 @@
         <input type="text" id="bugModule" placeholder="e.g. checkout, auth, search" autocomplete="off">
       </div>
 
+      <label class="boss-toggle" id="bossToggleWrap" style="display:none;">
+        <input type="checkbox" id="bossToggle">
+        <i class="ti ti-skull-bolt"></i> this kills the active boss bug (3x points)
+      </label>
+
       <div class="field">
         <label for="bugNotes">repro notes (optional)</label>
         <textarea id="bugNotes" rows="2" placeholder="steps to reproduce, environment, etc."></textarea>
@@ -171,8 +208,32 @@
   </div>
 </div>
 
+<!-- BUG DETAIL MODAL -->
+<div class="modal-backdrop" id="detailBackdrop">
+  <div class="modal" id="detailModal">
+    <div class="modal-head">
+      <h3><i class="ti ti-bug"></i> bug detail</h3>
+      <button class="modal-close" id="detailClose"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<!-- SESSION REPORT MODAL -->
+<div class="modal-backdrop" id="reportBackdrop">
+  <div class="modal modal-wide" id="reportModal">
+    <div class="modal-head">
+      <h3><i class="ti ti-report"></i> session report</h3>
+      <button class="modal-close" id="reportClose"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="reportBody"></div>
+  </div>
+</div>
+
 <!-- TOAST CONTAINER -->
 <div class="toast-stack" id="toastStack"></div>
+
+<div class="confetti-layer" id="confettiLayer"></div>
 
 <script src="app.js"></script>
 </body>

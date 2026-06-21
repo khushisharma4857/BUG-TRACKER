@@ -763,3 +763,256 @@ body::before {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* ============ ROUND CONTROL ============ */
+.round-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-sm { font-size: 11px; padding: 6px 10px; margin-top: 2px; }
+
+.round-clock {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--lime);
+  letter-spacing: 2px;
+}
+
+.round-clock.round-urgent {
+  color: var(--critical);
+  animation: pulse-dot 0.6s ease-in-out infinite;
+}
+
+/* ============ BOSS BANNER ============ */
+.boss-banner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, var(--critical-dim), #2a0a12, var(--critical-dim));
+  border-bottom: 1px solid var(--critical);
+  color: var(--critical);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  animation: boss-flash 1.2s ease-in-out infinite;
+}
+
+@keyframes boss-flash {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+
+.boss-banner i { font-size: 18px; }
+.boss-timer { color: var(--text-primary); background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px; }
+
+/* ============ MVP SLOT ============ */
+.mvp-slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: linear-gradient(to right, rgba(200,255,61,0.08), transparent);
+  border: 1px solid var(--lime-dim);
+  border-radius: 8px;
+}
+
+.mvp-slot i { font-size: 24px; color: var(--lime); }
+.mvp-name { font-size: 14px; font-weight: 700; color: var(--lime); }
+.mvp-label { font-size: 10px; color: var(--text-tertiary); font-family: var(--font-display); letter-spacing: 0.5px; }
+
+/* ============ FEED CONTROLS ============ */
+.feed-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.feed-controls input {
+  flex: 1;
+  background: var(--panel-raised);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: var(--font-body);
+}
+
+.feed-controls select {
+  background: var(--panel-raised);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font-body);
+}
+
+.feed-controls input:focus, .feed-controls select:focus {
+  outline: none;
+  border-color: var(--lime);
+}
+
+.feed-item { cursor: pointer; }
+.feed-item:hover { background: var(--border); }
+
+/* ============ BOSS TOGGLE IN FORM ============ */
+.boss-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--critical-dim);
+  border: 1px solid var(--critical);
+  border-radius: 6px;
+  color: var(--critical);
+  font-size: 12px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.boss-toggle input { width: auto; margin: 0; }
+
+/* ============ DETAIL / REPORT MODAL ============ */
+.modal-wide { max-width: 600px; }
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.detail-row:last-child { border-bottom: none; }
+.detail-row span:first-child { color: var(--text-secondary); }
+.detail-row span:last-child { color: var(--text-primary); font-weight: 500; text-align: right; max-width: 60%; }
+
+.detail-notes {
+  margin-top: 14px;
+  padding: 12px;
+  background: var(--panel-raised);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.report-stat {
+  background: var(--panel-raised);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.report-stat .stat-value {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.report-stat .stat-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.report-section-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+  letter-spacing: 0.5px;
+}
+
+.report-table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+}
+
+.report-table th, .report-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.report-table th { color: var(--text-tertiary); font-family: var(--font-display); font-weight: 400; }
+.report-table td:first-child { color: var(--text-primary); }
+
+/* ============ BUG OF SEVERITY: BOSS ============ */
+.feed-item.feed-boss {
+  border-left-color: var(--critical);
+  background: linear-gradient(to right, var(--critical-dim), var(--panel-raised));
+}
+
+.boss-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  background: var(--critical);
+  color: #2a0a12;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  font-family: var(--font-display);
+}
+
+/* ============ CONFETTI ============ */
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 70;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 8px;
+  height: 14px;
+  opacity: 0.9;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(110vh) rotate(540deg);
+    opacity: 0.3;
+  }
+}
+
+/* ============ RANK CROWN ANIMATION ============ */
+.hunter-row.rank-1 .hunter-rank::before {
+  content: '';
+}
+
+.crown-pop {
+  animation: crown-pop 0.5s ease;
+}
+
+@keyframes crown-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
